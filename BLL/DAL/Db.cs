@@ -8,6 +8,8 @@ namespace BLL.DAL
 
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<ProductStore> ProductStores { get; set; }
+
         public Db(DbContextOptions options) : base(options)
         { 
             

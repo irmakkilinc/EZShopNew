@@ -1,4 +1,7 @@
 using BLL.DAL;
+using BLL.Models;
+using BLL.Services;
+using BLL.Services.Bases;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,13 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddControllersWithViews();
 
+// IoC Container:
+string connectionString = builder.Configuration.GetConnectionString("Db");
+builder.Services.AddDbContext<Db>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+    
+// Way 1:
+// builder.Services.AddScoped<IProductService, ProductService>();
 
-
-builder.Services.AddDbContext<Db>(options =>
-    options.UseSqlServer
-    (builder.Configuration.GetConnectionString("Db")));
+// Way 2:
+builder.Services.AddScoped<IService<Product, ProductModel>, ProductService>();
 
 
 var app = builder.Build();
